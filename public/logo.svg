@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 720 740">
+<defs>
+<linearGradient id="tri" gradientUnits="userSpaceOnUse" x1="120" y1="120" x2="330" y2="745"><stop offset="0" stop-color="#6eab97"/><stop offset="0.5" stop-color="#4f8a77"/><stop offset="0.8" stop-color="#3b7163"/><stop offset="1" stop-color="#2b564c"/></linearGradient>
+<linearGradient id="ring" x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stop-color="#97d6b8"/><stop offset="0.45" stop-color="#5a9b85"/><stop offset="1" stop-color="#2b5a4f"/></linearGradient>
+<linearGradient id="inner" gradientUnits="userSpaceOnUse" x1="400" y1="230" x2="520" y2="520"><stop offset="0" stop-color="#78b99f"/><stop offset="0.5" stop-color="#4f8d79"/><stop offset="0.62" stop-color="#37705f"/><stop offset="1" stop-color="#2f6256"/></linearGradient>
+<mask id="gap" maskUnits="userSpaceOnUse" x="0" y="0" width="780" height="800"><rect width="780" height="800" fill="#fff"/><circle cx="472" cy="338" r="288" fill="#000"/><path d="M330 480 L262 600 L440 548 Z" fill="#000" stroke="#000" stroke-width="64" stroke-linejoin="round"/></mask>
+<mask id="ringMask" maskUnits="userSpaceOnUse" x="0" y="0" width="780" height="800"><circle cx="472" cy="338" r="247" fill="#fff"/><path d="M330 480 L262 600 L440 548 Z" fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round"/><circle cx="472" cy="338" r="203" fill="#000"/><path d="M345 470 L296 568 L410 524 Z" fill="#000" stroke="#000" stroke-width="10" stroke-linejoin="round"/></mask>
+<clipPath id="hole"><circle cx="472" cy="338" r="172"/><path d="M352 482 L316 556 L408 520 Z"/></clipPath>
+</defs>
+<g mask="url(#gap)"><polygon points="70,70 70,715 690,380" fill="url(#tri)" stroke="url(#tri)" stroke-width="60" stroke-linejoin="round"/></g>
+<rect width="780" height="800" fill="url(#ring)" mask="url(#ringMask)"/>
+<g clip-path="url(#hole)"><polygon points="360,205 612,382 322,548" fill="url(#inner)" stroke="url(#inner)" stroke-width="46" stroke-linejoin="round"/></g>
+<path d="M375 262Q375 352 467 352Q375 352 375 442Q375 352 283 352Q375 352 375 262Z" fill="#2f5d52"/>
+<path d="M545 192Q545 240 590 240Q545 240 545 288Q545 240 500 240Q545 240 545 192Z" fill="#6ab399"/>
+</svg>

@@ -1,0 +1,14 @@
+node_modules
+.vercel
+.next
+.env*.local
+dist
+build
+.env*
+
+# local DB backups (contain credentials + participant data)
+/backups
+
+# local database and build info
+/data/*.db
+*.tsbuildinfo

@@ -1,0 +1,65 @@
+// apply-card-icons-patch.js
+// Turns the assessment card's Edit / QR / Code / Archive buttons into
+// icon-only buttons, removes the "Export JSON" button, and keeps
+// "Responses (n)" as a labeled button.
+//
+// Run with: node apply-card-icons-patch.js
+// (run it from your project root, the same folder as package.json)
+const fs = require('fs');
+
+const patches = [
+  {
+    file: "components/admin/AssessmentCard.tsx",
+    oldB64: "J3VzZSBjbGllbnQnOwppbXBvcnQgdHlwZSB7IEFzc2Vzc21lbnQsIERCIH0gZnJvbSAnQC9saWIvdHlwZXMnOwppbXBvcnQgeyBhcmNoaXZlRGF5c1JlbWFpbmluZywgZm10RGF0ZSB9IGZyb20gJ0AvbGliL3V0aWxzJzsKCmludGVyZmFjZSBQcm9wcyB7",
+    newB64: "J3VzZSBjbGllbnQnOwppbXBvcnQgdHlwZSB7IEFzc2Vzc21lbnQsIERCIH0gZnJvbSAnQC9saWIvdHlwZXMnOwppbXBvcnQgeyBhcmNoaXZlRGF5c1JlbWFpbmluZywgZm10RGF0ZSB9IGZyb20gJ0AvbGliL3V0aWxzJzsKCi8vIFNtYWxsIGxpbmUtaWNvbnMgZm9yIHRoZSBpY29uLW9ubHkgY2FyZCBhY3Rpb25zIChFZGl0IC8gUVIgLyBBcmNoaXZlKS4KY29uc3QgRWRpdEljb24gPSAoKSA9PiAoCiAgPHN2ZyB2aWV3Qm94PSIwIDAgMTggMTgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8cGF0aAogICAgICBkPSJNMTEuNiAyLjkgMTUuMSA2LjQgNiAxNS41SDIuNVYxMkwxMS42IDIuOVoiCiAgICAgIHN0cm9rZT0iY3VycmVudENvbG9yIgogICAgICBzdHJva2VXaWR0aD0iMS40IgogICAgICBzdHJva2VMaW5lam9pbj0icm91bmQiCiAgICAvPgogICAgPHBhdGggZD0iTTkuOSA0LjYgMTMuNCA4LjEiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2VXaWR0aD0iMS40IiAvPgogIDwvc3ZnPgopOwoKY29uc3QgUXJJY29uID0gKCkgPT4gKAogIDxzdmcgdmlld0JveD0iMCAwIDE4IDE4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgPHJlY3QgeD0iMi41IiB5PSIyLjUiIHdpZHRoPSI1IiBoZWlnaHQ9IjUiIHJ4PSIwLjgiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2VXaWR0aD0iMS40IiAvPgogICAgPHJlY3QgeD0iMTAuNSIgeT0iMi41IiB3aWR0aD0iNSIgaGVpZ2h0PSI1IiByeD0iMC44IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlV2lkdGg9IjEuNCIgLz4KICAgIDxyZWN0IHg9IjIuNSIgeT0iMTAuNSIgd2lkdGg9IjUiIGhlaWdodD0iNSIgcng9IjAuOCIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZVdpZHRoPSIxLjQiIC8+CiAgICA8cmVjdCB4PSI0LjQiIHk9IjQuNCIgd2lkdGg9IjEuMiIgaGVpZ2h0PSIxLjIiIGZpbGw9ImN1cnJlbnRDb2xvciIgLz4KICAgIDxyZWN0IHg9IjEyLjQiIHk9IjQuNCIgd2lkdGg9IjEuMiIgaGVpZ2h0PSIxLjIiIGZpbGw9ImN1cnJlbnRDb2xvciIgLz4KICAgIDxyZWN0IHg9IjQuNCIgeT0iMTIuNCIgd2lkdGg9IjEuMiIgaGVpZ2h0PSIxLjIiIGZpbGw9ImN1cnJlbnRDb2xvciIgLz4KICAgIDxwYXRoIGQ9Ik0xMC41IDEwLjVoMi4ydjIuMmgtMi4yek0xMy44IDEwLjVoMS43djEuN2gtMS43ek0xMC41IDEzLjhoMS43djEuN2gtMS43ek0xMy42IDEzLjZoMS45djEuOWgtMS45eiIgZmlsbD0iY3VycmVudENvbG9yIiAvPgogIDwvc3ZnPgopOwoKY29uc3QgQXJjaGl2ZUljb24gPSAoKSA9PiAoCiAgPHN2ZyB2aWV3Qm94PSIwIDAgMTggMTgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8cmVjdCB4PSIyLjUiIHk9IjIuNSIgd2lkdGg9IjEzIiBoZWlnaHQ9IjMiIHJ4PSIwLjkiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2VXaWR0aD0iMS40IiAvPgogICAgPHBhdGggZD0iTTMuNiA1LjloMTAuOHY3LjZhMS40IDEuNCAwIDAgMS0xLjQgMS40SDVhMS40IDEuNCAwIDAgMS0xLjQtMS40VjUuOVoiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2VXaWR0aD0iMS40IiAvPgogICAgPHBhdGggZD0iTTcuMiA4LjloMy42IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlV2lkdGg9IjEuNCIgc3Ryb2tlTGluZWNhcD0icm91bmQiIC8+CiAgPC9zdmc+Cik7CgppbnRlcmZhY2UgUHJvcHMgew==",
+  },
+  {
+    file: "components/admin/AssessmentCard.tsx",
+    oldB64: "ICBvbkFyY2hpdmUsCiAgb25SZWNvdmVyLAogIG9uRGVsZXRlLAogIG9uRXhwb3J0SnNvbiwKICBlZGl0aW5nQnlPdGhlciw=",
+    newB64: "ICBvbkFyY2hpdmUsCiAgb25SZWNvdmVyLAogIG9uRGVsZXRlLAogIGVkaXRpbmdCeU90aGVyLA==",
+  },
+  {
+    file: "components/admin/AssessmentCard.tsx",
+    oldB64: "ICAgICAgPGRpdiBjbGFzc05hbWU9ImEtY2FyZC1hY3Rpb25zIj4KICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT0iYnRuIGJ0bi1zbSBidG4tZ2hvc3QiIG9uQ2xpY2s9eygpID0+IG9uRWRpdChhKX0+CiAgICAgICAgICBFZGl0CiAgICAgICAgPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0biBidG4tc20gYnRuLWdob3N0IiBvbkNsaWNrPXsoKSA9PiBvblFyKGEpfT4KICAgICAgICAgIFFSIC8gQ29kZQogICAgICAgIDwvYnV0dG9uPgogICAgICAgIDxidXR0b24gY2xhc3NOYW1lPSJidG4gYnRuLXNtIGJ0bi1hY2NlbnQiIG9uQ2xpY2s9eygpID0+IG9uVmlld1Jlc3BvbnNlcyhhLmlkKX0+CiAgICAgICAgICBSZXNwb25zZXMgKHtyZXNwQ291bnR9KQogICAgICAgIDwvYnV0dG9uPgogICAgICAgIHtvbkV4cG9ydEpzb24gJiYgKAogICAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0biBidG4tc20gYnRuLWdob3N0IiBvbkNsaWNrPXsoKSA9PiBvbkV4cG9ydEpzb24oYSl9IHRpdGxlPSJEb3dubG9hZCB0aGlzIHF1ZXN0aW9ubmFpcmUgYXMgYSByZXVzYWJsZSBKU09OIHRlbXBsYXRlIj4KICAgICAgICAgICAgRXhwb3J0IEpTT04KICAgICAgICAgIDwvYnV0dG9uPgogICAgICAgICl9CiAgICAgICAge2Euc3RhdHVzID09PSAnYWN0aXZlJyAmJiBvbkFyY2hpdmUgJiYgKAogICAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0biBidG4tc20gYnRuLWdob3N0IiBvbkNsaWNrPXsoKSA9PiBvbkFyY2hpdmUoYSl9PgogICAgICAgICAgICBBcmNoaXZlCiAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICApfQ==",
+    newB64: "ICAgICAgPGRpdiBjbGFzc05hbWU9ImEtY2FyZC1hY3Rpb25zIj4KICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT0iYnRuIGJ0bi1zbSBidG4tZ2hvc3QgYnRuLWljb24iIHRpdGxlPSJFZGl0IiBhcmlhLWxhYmVsPSJFZGl0IiBvbkNsaWNrPXsoKSA9PiBvbkVkaXQoYSl9PgogICAgICAgICAgPEVkaXRJY29uIC8+CiAgICAgICAgPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0biBidG4tc20gYnRuLWdob3N0IGJ0bi1pY29uIiB0aXRsZT0iUVIgLyBDb2RlIiBhcmlhLWxhYmVsPSJRUiAvIENvZGUiIG9uQ2xpY2s9eygpID0+IG9uUXIoYSl9PgogICAgICAgICAgPFFySWNvbiAvPgogICAgICAgIDwvYnV0dG9uPgogICAgICAgIDxidXR0b24gY2xhc3NOYW1lPSJidG4gYnRuLXNtIGJ0bi1hY2NlbnQiIG9uQ2xpY2s9eygpID0+IG9uVmlld1Jlc3BvbnNlcyhhLmlkKX0+CiAgICAgICAgICBSZXNwb25zZXMgKHtyZXNwQ291bnR9KQogICAgICAgIDwvYnV0dG9uPgogICAgICAgIHthLnN0YXR1cyA9PT0gJ2FjdGl2ZScgJiYgb25BcmNoaXZlICYmICgKICAgICAgICAgIDxidXR0b24gY2xhc3NOYW1lPSJidG4gYnRuLXNtIGJ0bi1naG9zdCBidG4taWNvbiIgdGl0bGU9IkFyY2hpdmUiIGFyaWEtbGFiZWw9IkFyY2hpdmUiIG9uQ2xpY2s9eygpID0+IG9uQXJjaGl2ZShhKX0+CiAgICAgICAgICAgIDxBcmNoaXZlSWNvbiAvPgogICAgICAgICAgPC9idXR0b24+CiAgICAgICAgKX0=",
+  },
+  {
+    file: "app/globals.css",
+    oldB64: "LmJ0bi1zbXtwYWRkaW5nOjdweCAxMnB4O2ZvbnQtc2l6ZToxMi41cHg7Ym9yZGVyLXJhZGl1czo4cHg7fQouYnRuLWJsb2Nre3dpZHRoOjEwMCU7anVzdGlmeS1jb250ZW50OmNlbnRlcjt9",
+    newB64: "LmJ0bi1zbXtwYWRkaW5nOjdweCAxMnB4O2ZvbnQtc2l6ZToxMi41cHg7Ym9yZGVyLXJhZGl1czo4cHg7fQouYnRuLWJsb2Nre3dpZHRoOjEwMCU7anVzdGlmeS1jb250ZW50OmNlbnRlcjt9Ci5idG4taWNvbntwYWRkaW5nOjhweDt3aWR0aDozNHB4O2hlaWdodDozNHB4O2p1c3RpZnktY29udGVudDpjZW50ZXI7ZmxleDpub25lO30KLmJ0bi1pY29uIHN2Z3t3aWR0aDoxNnB4O2hlaWdodDoxNnB4O2ZsZXg6bm9uZTt9",
+  },
+];
+
+let anyFailed = false;
+
+for (const p of patches) {
+  if (!fs.existsSync(p.file)) {
+    console.log(`SKIP (file not found): ${p.file}`);
+    anyFailed = true;
+    continue;
+  }
+  const content = fs.readFileSync(p.file, 'utf8');
+  const oldStr = Buffer.from(p.oldB64, 'base64').toString('utf8');
+  const newStr = Buffer.from(p.newB64, 'base64').toString('utf8');
+
+  if (content.includes(newStr)) {
+    console.log(`ALREADY APPLIED: ${p.file} (skipping this piece)`);
+    continue;
+  }
+  if (!content.includes(oldStr)) {
+    console.log(`NOT FOUND (couldn't locate the expected original text): ${p.file}`);
+    console.log('  -> This piece was not applied automatically. It may already be modified differently than expected.');
+    anyFailed = true;
+    continue;
+  }
+  const updated = content.replace(oldStr, newStr);
+  fs.writeFileSync(p.file, updated, 'utf8');
+  console.log(`APPLIED: ${p.file}`);
+}
+
+if (anyFailed) {
+  console.log('\nSome pieces were not applied automatically — see above. Everything else that printed APPLIED or ALREADY APPLIED is done.');
+  process.exit(1);
+} else {
+  console.log('\nAll patches applied successfully.');
+}
